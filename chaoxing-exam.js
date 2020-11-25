@@ -179,7 +179,7 @@ function findTiMu() {
                         .replace(/[A-Z]\./g, "")
                         .replace(/&/g, "&amp;");
                     if (/万事屋/.test(obj.data)) {
-                        findAnswer();
+                        findTiMu();
                         return;
                     }
                     obj.answer = obj.data;
