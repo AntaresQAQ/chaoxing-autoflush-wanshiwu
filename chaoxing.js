@@ -58,10 +58,6 @@ var setting = {
     url = location.pathname,
     top = _self;
 
-function getRandomInteger(min, max) {
-    return Math.floor(Math.random() * (max - min)) + min;
-}
-
 if (url != "/studyApp/studying" && top != _self.top)
     document.domain = location.host.replace(/.+?\./, "");
 
