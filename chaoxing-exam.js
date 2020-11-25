@@ -1,14 +1,12 @@
 // ==UserScript==
-// @name         超星网课助手(考试专版)(改)
-// @namespace    coder_tq
-// @version      3.3.7
+// @name         超星网课助手(考试专版)(万事屋题库)
 // @description  自动搜索尔雅MOOC考试答案，支持自动答题、自动切换题目、隐藏答案搜索提示框等，解除各类功能限制，开放自定义参数
-// @author       coder_tq
+// @author       Antares
 // @match        *://*.chaoxing.com/exam/test/reVersionTestStartNew*
 // @match        *://*.edu.cn/exam/test/reVersionTestStartNew*
 // @match        *://*.nbdlib.cn/exam/test/reVersionTestStartNew*
 // @match        *://*.hnsyu.net/exam/test/reVersionTestStartNew*
-// @connect      cx.icodef.com
+// @connect      api.wanshiwu.asia
 // @run-at       document-end
 // @grant        unsafeWindow
 // @grant        GM_xmlhttpRequest
@@ -22,8 +20,8 @@
 var setting = {
     // 8E3 == 8000，科学记数法，表示毫秒数
     time: 5E3, // 默认响应速度为8秒，不建议小于5秒
-    uid: "",
-    token: "",
+    uid: "", // 请前往 https://wanshiwu.asia 注册账号获取
+    token: "", // 请前往 https://wanshiwu.asia 注册账号获取
     // 1代表开启，0代表关闭
     none: 0, // 未找到答案或无匹配答案时执行默认操作，默认关闭
     jump: 1, // 答题完成后自动切换，默认开启
