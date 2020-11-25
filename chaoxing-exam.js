@@ -43,6 +43,12 @@ String.prototype.toCDB = function () {
     }).replace(/[“”]/g, '"').replace(/[‘’]/g, "'").replace(/。/g, '.');
 };
 
+String.prototype.html2Escape = function () {
+    return this.replace(/[<>&"]/g, (c) => {
+        return { '<': '&lt;', '>': '&gt;', '&': '&amp;', '"': '&quot;' }[c];
+    });
+}
+
 // setting.time += Math.ceil(setting.time * Math.random()) - setting.time / 2;
 setting.TiMu = [
     filterImg('.Cy_TItle .clearfix').replace(/\s*（\d+\.\d+分）$/, ''),
@@ -63,8 +69,9 @@ var maximize = $(
 setting.div = $(
     '<div style="border: 2px dashed rgb(0, 85, 68); width: 330px; position: fixed; top: 0; right: 0; z-index: 99999; background-color: rgba(70, 196, 38, 0.6); overflow-x: auto;">' +
     '<span style="font-size: medium;"></span>' +
-    '<div style="font-size: medium;width:70%;display: inline-block;">正在搜索答案...</div>' +
+    '<div style="font-size: medium;">正在搜索答案...</div>' +
     '<div style="width:30%;display: inline-block;padding-right: 10px;box-sizing: border-box;text-align: right;"><minimize style="width:20px;font-size:16px;line-height: 12px;font-weight: bold;cursor: context-menu;user-select:none;">一</minimize></div>' +
+    '<div id="cx-notice" style="border-top: 1px solid #000;border-bottom: 1px solid #000;margin: 4px 0px;overflow: hidden;">' + setting.notice + '</div>' +
     '<button style="margin-right: 10px;">暂停答题</button>' +
     '<button style="margin-right: 10px;' + (setting.jump ? '' : ' display: none;') + '">点击停止本次切换</button>' +
     '<button style="margin-right: 10px;">重新查询</button>' +
@@ -176,20 +183,16 @@ function findTiMu() {
                     obj.data = obj.data[0].details.answer
                         .replace("--- 万事屋题库", "")
                         .replace(/(^\s*|(\s*$))/g, "")
-                        .replace(/[A-Z]\./g, "")
-                        .replace(/&/g, "&amp;");
+                        .replace(/[A-Z]\./g, "");
                     if (/万事屋/.test(obj.data)) {
                         findTiMu();
                         return;
                     }
                     obj.answer = obj.data;
-                    var answer = String(obj.answer).replace(/&/g, '&amp;').replace(/<(?!img)/g, '&lt;'),
-                        que = setting.TiMu[0].match('<img') ? setting.TiMu[0] : setting.TiMu[0].replace(/&/g, '&amp;').replace(/</g, '&lt');
-                    obj.answer = /^http/.test(answer) ? '<img src="' + obj.answer + '">' : obj.answer;
                     setting.div.find('tbody').append(
                         '<tr>' +
                         '<td title="点击可复制">' + que + '</td>' +
-                        '<td title="点击可复制">' + (/^http/.test(answer) ? obj.answer : '') + answer + '</td>' +
+                        '<td title="点击可复制">' + obj.answer.html2Escape() + '</td>' +
                         '</tr>'
                     );
                     setting.copy && GM_setClipboard(obj.answer);
