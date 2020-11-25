@@ -65,7 +65,6 @@ setting.div = $(
     '<span style="font-size: medium;"></span>' +
     '<div style="font-size: medium;width:70%;display: inline-block;">正在搜索答案...</div>' +
     '<div style="width:30%;display: inline-block;padding-right: 10px;box-sizing: border-box;text-align: right;"><minimize style="width:20px;font-size:16px;line-height: 12px;font-weight: bold;cursor: context-menu;user-select:none;">一</minimize></div>' +
-    '<div id="cx-notice" style="border-top: 1px solid #000;border-bottom: 1px solid #000;margin: 4px 0px;overflow: hidden;">' + setting.notice + '</div>' +
     '<button style="margin-right: 10px;">暂停答题</button>' +
     '<button style="margin-right: 10px;' + (setting.jump ? '' : ' display: none;') + '">点击停止本次切换</button>' +
     '<button style="margin-right: 10px;">重新查询</button>' +
@@ -166,11 +165,12 @@ setting.loop = setInterval(findTiMu, setting.time);
 function findTiMu() {
     GM_xmlhttpRequest({
         method: 'GET',
-        url: `https://api.wanshiwu.asia/api/search?uid=${setting.uid}&token=${setting.token}&question=${encodeURIComponent(question)}`,
+        url: `https://api.wanshiwu.asia/api/search?uid=${setting.uid}&token=${setting.token}&question=${encodeURIComponent(setting.TiMu[0])}`,
         timeout: setting.time,
         onload: function (xhr) {
             if (!setting.loop) {
             } else if (xhr.status == 200) {
+                let response = xhr.responseText;
                 var obj = $.parseJSON(response);
                 if (obj.code == 200 && obj.data && obj.data.length) {
                     obj.data = obj.data[0].details.answer
@@ -198,7 +198,7 @@ function findTiMu() {
                 } else {
                     setting.$div.html(obj.answer || '服务器繁忙，正在重试...');
                 }
-                setting.div.children('span').html(obj.msg || obj || '');
+                setting.div.children('span').html(obj.msg || '');
             } else if (xhr.status == 403) {
                 var html = xhr.responseText.indexOf('{') ? '请求过于频繁，建议稍后再试' : $.parseJSON(xhr.responseText).data;
                 setting.$div.data('html', html).siblings('button:eq(0)').click();
