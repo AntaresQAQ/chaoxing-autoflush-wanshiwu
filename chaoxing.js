@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name         超星网课助手（万事屋题库）
+// @name         超星网课助手(万事屋题库)
 // @namespace    chaoxing-wanshiwu
 // @description  自动挂机看尔雅MOOC，支持视频、音频、文档、图书自动完成，章节测验自动答题提交，支持自动切换任务点、挂机阅读时长、自动登录等，解除各类功能限制，开放自定义参数
 // @version      1.0
@@ -18,8 +18,8 @@
 var setting = {
     // 5E3 == 5000，科学记数法，表示毫秒数
     time: 5e3, // 默认响应速度为5秒，不建议小于3秒
-    uid: "", // 请前往 https://wanshiwu.asia 注册账号获取
-    token: "", // 请前往 https://wanshiwu.asia 注册账号获取
+    uid: "13482", // 请前往 https://wanshiwu.asia 注册账号获取
+    token: "YPOBcRtWWwDnvctSeHs2T46le4FLbhid", // 请前往 https://wanshiwu.asia 注册账号获取
     review: 0, // 复习模式，完整挂机视频(音频)时长，支持挂机任务点已完成的视频和音频，默认关闭
     queue: 1, // 队列模式，开启后任务点逐一完成，关闭则单页面所有任务点同时进行，默认开启
 
@@ -88,6 +88,12 @@ String.prototype.toCDB = function () {
         .replace(/[‘’]/g, "'")
         .replace(/。/g, ".");
 };
+
+String.prototype.html2Escape = function () {
+    return this.replace(/[<>&"]/g, (c) => {
+        return { '<': '&lt;', '>': '&gt;', '&': '&amp;', '"': '&quot;' }[c];
+    });
+}
 
 setting.normal = ""; // ':visible'
 // setting.time += Math.ceil(setting.time * Math.random()) - setting.time / 2;
@@ -496,11 +502,10 @@ function findAnswer() {
                 let response = xhr.responseText;
                 var obj = $.parseJSON(response);
                 if (obj.code == 200 && obj.data && obj.data.length) {
-                    obj.data = obj.data[0].details.answer
+                    obj.data = (obj.data[0].details.answer || (obj.data.length >= 2 ? (obj.data[1].details.answer || "") : ""))
                         .replace("--- 万事屋题库", "")
                         .replace(/(^\s*|(\s*$))/g, "")
-                        .replace(/[A-Z]\./g, "")
-                        .replace(/&/g, "&amp;");
+                        .replace(/[A-Z]\./g, "");
                     if (/万事屋/.test(obj.data)) {
                         findAnswer();
                         return;
@@ -519,7 +524,7 @@ function findAnswer() {
                         "</td>" +
                         td +
                         '" title="点击可复制">' +
-                        obj.data +
+                        obj.data.html2Escape() +
                         "</td>" +
                         "</tr>"
                     )
