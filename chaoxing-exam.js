@@ -1,6 +1,8 @@
 // ==UserScript==
 // @name         超星网课助手(考试专版)(万事屋题库)
+// @namespace    chaoxing-wanshiwu
 // @description  自动搜索尔雅MOOC考试答案，支持自动答题、自动切换题目、隐藏答案搜索提示框等，解除各类功能限制，开放自定义参数
+// @version      1.0
 // @author       Antares
 // @match        *://*.chaoxing.com/exam/test/reVersionTestStartNew*
 // @match        *://*.edu.cn/exam/test/reVersionTestStartNew*
