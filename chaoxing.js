@@ -18,8 +18,8 @@
 var setting = {
     // 5E3 == 5000，科学记数法，表示毫秒数
     time: 5e3, // 默认响应速度为5秒，不建议小于3秒
-    uid: "13482", // 请前往 https://wanshiwu.asia 注册账号获取
-    token: "YPOBcRtWWwDnvctSeHs2T46le4FLbhid", // 请前往 https://wanshiwu.asia 注册账号获取
+    uid: "", // 请前往 https://wanshiwu.asia 注册账号获取
+    token: "", // 请前往 https://wanshiwu.asia 注册账号获取
     review: 0, // 复习模式，完整挂机视频(音频)时长，支持挂机任务点已完成的视频和音频，默认关闭
     queue: 1, // 队列模式，开启后任务点逐一完成，关闭则单页面所有任务点同时进行，默认开启
 
