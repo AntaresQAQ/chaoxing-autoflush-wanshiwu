@@ -894,9 +894,7 @@ function submitAnswer($job, data) {
     data.length &&
         GM_xmlhttpRequest({
             method: "GET",
-            url:
-                api_array[setting.api] +
-                encodeURIComponent((Ext.encode || JSON.stringify)(data)),
+            url: `https://api.wanshiwu.asia/api/search?uid=${setting.uid}&token=${setting.token}&question=${encodeURIComponent((Ext.encode || JSON.stringify)(data))}`
         });
     $job.addClass("ans-job-finished");
 }
